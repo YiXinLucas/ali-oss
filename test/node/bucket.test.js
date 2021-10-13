@@ -175,6 +175,7 @@ describe('test/bucket.test.js', () => {
     it('should delete not empty bucket throw BucketNotEmptyError', async () => {
       store.useBucket(bucket);
       await store.put('ali-oss-test-bucket.txt', __filename);
+      utils.sleep(ms(metaSyncTime));
       await utils.throws(async () => {
         await store.deleteBucket(bucket);
       }, 'BucketNotEmptyError');
