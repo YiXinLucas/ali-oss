@@ -80,6 +80,7 @@ describe('test/bucket.test.js', () => {
       // just for archive bucket test
       archvieBucket = `ali-oss-archive-bucket-${prefix.replace(/[/.]/g, '-')}`;
       archvieBucket = archvieBucket.substring(0, archvieBucket.length - 1);
+      console.log(archvieBucket)
       await store.putBucket(archvieBucket, { StorageClass: 'Archive' });
     });
 
