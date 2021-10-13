@@ -27,9 +27,8 @@ describe('test/bucket.test.js', () => {
     const bucketResult = await store.listBuckets({
       // prefix: '',
       'max-keys': 20,
-      options: {
-        timeout: 120000
-      }
+    }, {
+      timeout: 120000
     });
 
     await Promise.all(
@@ -90,7 +89,7 @@ describe('test/bucket.test.js', () => {
 
     it('should create an archive bucket', async () => {
       await utils.sleep(ms(metaSyncTime));
-      const result2 = await store.listBuckets(null, {
+      const result2 = await store.listBuckets({}, {
         timeout: 120000,
       });
       const { buckets } = result2;
