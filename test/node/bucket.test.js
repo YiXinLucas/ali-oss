@@ -136,7 +136,6 @@ describe('test/bucket.test.js', () => {
     it('it should return correct bucketInfo when bucket exist', async () => {
       const result = await store.getBucketInfo(bucket);
       assert.equal(result.res.status, 200);
-      console.log(result.bucket)
 
       assert.equal(result.bucket.Location, `${bucketRegion}`);
       assert.equal(result.bucket.ExtranetEndpoint, `${bucketRegion}.aliyuncs.com`);
