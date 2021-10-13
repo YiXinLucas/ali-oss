@@ -19,7 +19,7 @@ describe('test/bucket.test.js', () => {
   let store;
   let bucket;
   let bucketRegion;
-  const env = process.env.ONCI ? true : false
+  const env = process.env.ONCI;
   const defaultRegion = config.region;
   before(async () => {
     store = oss(config);
@@ -27,8 +27,9 @@ describe('test/bucket.test.js', () => {
     const bucketResult = await store.listBuckets({
       // prefix: '',
       'max-keys': 20,
-    }, {
-      timeout: 120000
+      options: {
+        timeout: 120000
+      }
     });
 
     await Promise.all(
@@ -225,8 +226,9 @@ describe('test/bucket.test.js', () => {
       const result = await store.listBuckets({
         prefix: listBucketsPrefix,
         'max-keys': 20,
-      }, {
-        timeout: 120000
+        options: {
+          timeout: 120000
+        }
       });
 
       assert(Array.isArray(result.buckets));
