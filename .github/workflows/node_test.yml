@@ -135,7 +135,7 @@ jobs:
 
   cleanAllBucket:
     environment: ali_oss_AK
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
 
     env:
       ONCI: true
@@ -152,5 +152,9 @@ jobs:
       matrix:
         node-version: [14.x]
     steps:
+    - uses: actions/checkout@v2
     - name: clean all bucket
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ matrix.node-version }}
     - run: node test/node/cleanAllBucket.js
