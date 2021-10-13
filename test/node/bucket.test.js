@@ -467,7 +467,7 @@ describe('test/bucket.test.js', () => {
         allowedMethod: 'GET',
         allowedHeader: '*',
         exposeHeader: 'Content-Length',
-        maxAgeSeconds: '30'
+        maxAgeSeconds: env.ONCI ? '120' : '30'
       }]);
     });
 
@@ -479,7 +479,7 @@ describe('test/bucket.test.js', () => {
       const putCorsResult1 = await store.putBucketCORS(bucket, rules1);
       assert.equal(putCorsResult1.res.status, 200);
 
-      await utils.sleep(ms('1000ms'));
+      await utils.sleep(ms(metaSyncTime));
 
       const getCorsResult1 = await store.getBucketCORS(bucket);
       assert.equal(getCorsResult1.res.status, 200);
@@ -495,7 +495,7 @@ describe('test/bucket.test.js', () => {
       const putCorsResult2 = await store.putBucketCORS(bucket, rules2);
       assert.equal(putCorsResult2.res.status, 200);
 
-      await utils.sleep(ms('1000ms'));
+      await utils.sleep(ms(metaSyncTime));
 
       const getCorsResult2 = await store.getBucketCORS(bucket);
       assert.equal(getCorsResult2.res.status, 200);
