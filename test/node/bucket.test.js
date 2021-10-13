@@ -90,9 +90,9 @@ describe('test/bucket.test.js', () => {
 
     it('should create an archive bucket', async () => {
       await utils.sleep(ms(metaSyncTime));
-      const result2 = await store.listBuckets({ options: {
+      const result2 = await store.listBuckets(null, {
         timeout: 120000,
-      } });
+      });
       const { buckets } = result2;
       const m = buckets.some(item => item.name === archvieBucket);
       assert(m === true);
@@ -226,9 +226,8 @@ describe('test/bucket.test.js', () => {
       const result = await store.listBuckets({
         prefix: listBucketsPrefix,
         'max-keys': 20,
-        options: {
-          timeout: 120000
-        }
+      }, {
+        timeout: 120000
       });
 
       assert(Array.isArray(result.buckets));
