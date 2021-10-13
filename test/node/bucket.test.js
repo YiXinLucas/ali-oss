@@ -19,6 +19,7 @@ describe('test/bucket.test.js', () => {
   let store;
   let bucket;
   let bucketRegion;
+  const env = process.env.ONCI ? true : false
   const defaultRegion = config.region;
   before(async () => {
     store = oss(config);
@@ -40,7 +41,7 @@ describe('test/bucket.test.js', () => {
     bucket = bucket.substring(0, bucket.length - 1);
     bucketRegion = defaultRegion;
 
-    const result = await store.putBucket(bucket);
+    const result = await store.putBucket(bucket, { timeout: env ? 600000 : 10000 });
     assert.equal(result.bucket, bucket);
     assert.equal(result.res.status, 200);
   });
