@@ -80,7 +80,6 @@ describe('test/bucket.test.js', () => {
       // just for archive bucket test
       archvieBucket = `ali-oss-archive-bucket-${prefix.replace(/[/.]/g, '-')}`;
       archvieBucket = archvieBucket.substring(0, archvieBucket.length - 1);
-      console.log(archvieBucket)
       await store.putBucket(archvieBucket, { StorageClass: 'Archive' });
     });
 
@@ -92,13 +91,16 @@ describe('test/bucket.test.js', () => {
 
     it('should create an archive bucket', async () => {
       await utils.sleep(ms(metaSyncTime));
-      const result2 = await store.listBuckets();
+      const result2 = await store.listBuckets({
+        options: {
+          timeout: 120000,
+        }
+      });
       const { buckets } = result2;
       const m = buckets.some(item => item.name === archvieBucket);
       assert(m === true);
       buckets.map((item) => {
         if (item.name === archvieBucket) {
-          console.log(item)
           assert(item.StorageClass === 'Archive');
         }
         return 1;
@@ -226,7 +228,10 @@ describe('test/bucket.test.js', () => {
     it('should list buckets by prefix', async () => {
       const result = await store.listBuckets({
         prefix: listBucketsPrefix,
-        'max-keys': 20
+        'max-keys': 20,
+        options: {
+          timeout: 120000
+        }
       });
 
       assert(Array.isArray(result.buckets));
