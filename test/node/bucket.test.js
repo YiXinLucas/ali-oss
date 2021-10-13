@@ -78,11 +78,11 @@ describe('test/bucket.test.js', () => {
       // just for archive bucket test
       archvieBucket = `ali-oss-archive-bucket-${prefix.replace(/[/.]/g, '-')}`;
       archvieBucket = archvieBucket.substring(0, archvieBucket.length - 1);
-      await store.putBucket(archvieBucket, { StorageClass: 'Archive' });
+      await store.putBucket(archvieBucket, { StorageClass: 'Archive', timeout: 120000 });
     });
 
     it('should create a new bucket', async () => {
-      const result1 = await store.putBucket(name);
+      const result1 = await store.putBucket(name, { timeout: 120000 });
       assert.equal(result1.bucket, name);
       assert.equal(result1.res.status, 200);
     });
@@ -92,6 +92,7 @@ describe('test/bucket.test.js', () => {
       const result2 = await store.listBuckets({}, {
         timeout: 120000,
       });
+      console.log(result2);
       const { buckets } = result2;
       const m = buckets.some(item => item.name === archvieBucket);
       assert(m === true);
