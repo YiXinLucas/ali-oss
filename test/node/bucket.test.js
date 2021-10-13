@@ -98,6 +98,7 @@ describe('test/bucket.test.js', () => {
       assert(m === true);
       buckets.map((item) => {
         if (item.name === archvieBucket) {
+          console.log(item)
           assert(item.StorageClass === 'Archive');
         }
         return 1;
@@ -137,7 +138,6 @@ describe('test/bucket.test.js', () => {
   describe('getBucketInfo', () => {
     it('it should return correct bucketInfo when bucket exist', async () => {
       const result = await store.getBucketInfo(bucket);
-      console.log(result)
       assert.equal(result.res.status, 200);
 
       assert.equal(result.bucket.Location, `${bucketRegion}`);
