@@ -134,6 +134,8 @@ jobs:
     - run: npm run test
 
   cleanAllBucket:
+    if: always()
+    needs: [node_10,node_12,node_14]
     environment: ali_oss_AK
     runs-on: ubuntu-latest
 
@@ -157,4 +159,5 @@ jobs:
       uses: actions/setup-node@v2
       with:
         node-version: ${{ matrix.node-version }}
+    - run: npm install
     - run: node test/node/cleanAllBucket.js
