@@ -26,7 +26,9 @@ describe('test/bucket.test.js', () => {
 
     const bucketResult = await store.listBuckets({
       // prefix: '',
-      'max-keys': 20
+      'max-keys': 20,
+    }, {
+      timeout: 120000
     });
 
     await Promise.all(
@@ -44,10 +46,6 @@ describe('test/bucket.test.js', () => {
     const result = await store.putBucket(bucket, { timeout: env ? 600000 : 10000 });
     assert.equal(result.bucket, bucket);
     assert.equal(result.res.status, 200);
-  });
-
-  after(async () => {
-    await utils.cleanBucket(store, bucket);
   });
 
   describe('setBucket()', () => {
@@ -91,10 +89,8 @@ describe('test/bucket.test.js', () => {
 
     it('should create an archive bucket', async () => {
       await utils.sleep(ms(metaSyncTime));
-      const result2 = await store.listBuckets({
-        options: {
-          timeout: 120000,
-        }
+      const result2 = await store.listBuckets(null, {
+        timeout: 120000,
       });
       const { buckets } = result2;
       const m = buckets.some(item => item.name === archvieBucket);
@@ -229,9 +225,8 @@ describe('test/bucket.test.js', () => {
       const result = await store.listBuckets({
         prefix: listBucketsPrefix,
         'max-keys': 20,
-        options: {
-          timeout: 120000
-        }
+      }, {
+        timeout: 120000
       });
 
       assert(Array.isArray(result.buckets));
