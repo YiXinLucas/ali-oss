@@ -17,4 +17,4 @@ config.sts = {
   endpoint: env.ONCI ? 'https://sts.aliyuncs.com/' : null
 };
 
-config.metaSyncTime = env.ONCI ? '60s' : '1000ms';
+config.metaSyncTime = env.ONCI ? '10s' : '1000ms';
