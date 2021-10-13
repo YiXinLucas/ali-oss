@@ -6,6 +6,7 @@ config.oss = {
   accessKeyId: env.ALI_SDK_OSS_ID,
   accessKeySecret: env.ALI_SDK_OSS_SECRET,
   region: env.ALI_SDK_OSS_REGION || 'oss-cn-hangzhou',
+  endpoint: env.ONCI ? 'https://oss-us-west-1.aliyuncs.com' : null
 };
 
 config.sts = {
@@ -16,4 +17,4 @@ config.sts = {
   endpoint: env.ONCI ? 'https://sts.aliyuncs.com/' : null
 };
 
-config.metaSyncTime = env.ONCI ? '30s' : '1000ms';
+config.metaSyncTime = env.ONCI ? '60s' : '1000ms';
