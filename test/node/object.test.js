@@ -49,10 +49,6 @@ describe('test/object.test.js', () => {
     // store.useBucket(archvieBucket, bucketRegion);
   });
 
-  after(async () => {
-    await utils.cleanAllBucket(store);
-  });
-
   describe('putStream()', () => {
     afterEach(mm.restore);
 
@@ -2245,7 +2241,10 @@ describe('test/object.test.js', () => {
         type: 'ColdArchive',
         Days: 2
       });
-      assert.equal(['Expedited', 'Standard', 'Bulk'].includes(result.res.headers['x-oss-object-restore-priority']), true);
+      assert.equal(
+        ['Expedited', 'Standard', 'Bulk'].includes(result.res.headers['x-oss-object-restore-priority']),
+        true
+      );
     });
 
     it('ColdArchive is Accepted', async () => {
@@ -2253,7 +2252,10 @@ describe('test/object.test.js', () => {
       const result = await store.restore(name, {
         type: 'ColdArchive'
       });
-      assert.equal(['Expedited', 'Standard', 'Bulk'].includes(result.res.headers['x-oss-object-restore-priority']), true);
+      assert.equal(
+        ['Expedited', 'Standard', 'Bulk'].includes(result.res.headers['x-oss-object-restore-priority']),
+        true
+      );
     });
   });
 
@@ -2322,12 +2324,13 @@ describe('test/object.test.js', () => {
           }
         };
 
-        const postFile = () => new Promise((resolve, reject) => {
-          request(options, (err, res) => {
-            if (err) reject(err);
-            if (res) resolve(res);
+        const postFile = () =>
+          new Promise((resolve, reject) => {
+            request(options, (err, res) => {
+              if (err) reject(err);
+              if (res) resolve(res);
+            });
           });
-        });
 
         const result = await postFile();
         assert(result.statusCode === 204);

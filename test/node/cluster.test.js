@@ -46,11 +46,6 @@ describe('test/cluster.test.js', () => {
     this.store.ready(done);
   });
 
-  after(async function () {
-    await utils.cleanBucket(this.store.clients[0], this.bucket1);
-    await utils.cleanBucket(this.store.clients[1], this.bucket2);
-    this.store.close();
-  });
 
   describe('init', () => {
     it('require options.cluster to be an array', () => {
