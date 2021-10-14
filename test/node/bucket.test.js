@@ -24,20 +24,6 @@ describe('test/bucket.test.js', () => {
   const defaultRegion = config.region;
   before(async () => {
     store = oss(config);
-
-    const bucketResult = await store.listBuckets({
-      // prefix: '',
-      'max-keys': 20,
-    }, {
-      timeout: 120000
-    });
-
-    //await Promise.all(
-      //(bucketResult.buckets || [])
-        //.filter(_ => _.name.startsWith('ali-oss'))
-        //.map(_bucket => utils.cleanBucket(oss(Object.assign(config, { region: _bucket.region })), _bucket.name))
-    //);
-
     config.region = defaultRegion;
     store = oss(config);
     bucket = `ali-oss-test-bucket-${prefix.replace(/[/.]/g, '-')}`;
@@ -418,7 +404,7 @@ describe('test/bucket.test.js', () => {
     it('should create, get and delete the referer', async () => {
       const putresult = await store.putBucketReferer(bucket, true, [
         'http://npm.taobao.org'
-      ]);
+      ], { timeout: 120000 });
       assert.equal(putresult.res.status, 200);
 
       // put again will be fine
@@ -427,7 +413,7 @@ describe('test/bucket.test.js', () => {
         'https://npm.taobao.org',
         'http://cnpmjs.org'
       ];
-      const putReferer = await store.putBucketReferer(bucket, false, referers);
+      const putReferer = await store.putBucketReferer(bucket, false, referers, { timeout: 120000 });
       assert.equal(putReferer.res.status, 200);
 
       await utils.sleep(ms(metaSyncTime));

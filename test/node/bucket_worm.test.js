@@ -11,7 +11,6 @@ describe('test/bucket_worm.test.js', () => {
   const defaultRegion = config.region;
   before(async () => {
     store = oss(config);
-    console.log(store)
     config.region = defaultRegion;
     store = oss(config);
     bucket = `ali-oss-test-bucket-worm-${prefix.replace(/[/.]/g, '-')}`;
