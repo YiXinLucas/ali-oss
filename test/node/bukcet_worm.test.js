@@ -11,19 +11,6 @@ describe('test/bucket.test.js', () => {
   const defaultRegion = config.region;
   before(async () => {
     store = oss(config);
-
-    const bucketResult = await store.listBuckets({
-      'max-keys': 20
-    });
-
-    await Promise.all((bucketResult.buckets || [])
-      .filter(_ => _.name.startsWith('ali-oss'))
-      .map(_bucket => utils
-        .cleanBucket(
-          oss(Object.assign(config, { region: _bucket.region })),
-          _bucket.name
-        )));
-
     config.region = defaultRegion;
     store = oss(config);
     bucket = `ali-oss-test-bucket-${prefix.replace(/[/.]/g, '-')}`;
