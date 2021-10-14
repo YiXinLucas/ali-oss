@@ -19,7 +19,8 @@ describe('test/bucket.test.js', () => {
   let store;
   let bucket;
   let bucketRegion;
-  const env = process.env.ONCI;
+  let env;
+  if (process.env.ONCI) env = true;
   const defaultRegion = config.region;
   before(async () => {
     store = oss(config);
@@ -31,11 +32,11 @@ describe('test/bucket.test.js', () => {
       timeout: 120000
     });
 
-    await Promise.all(
-      (bucketResult.buckets || [])
-        .filter(_ => _.name.startsWith('ali-oss'))
-        .map(_bucket => utils.cleanBucket(oss(Object.assign(config, { region: _bucket.region })), _bucket.name))
-    );
+    //await Promise.all(
+      //(bucketResult.buckets || [])
+        //.filter(_ => _.name.startsWith('ali-oss'))
+        //.map(_bucket => utils.cleanBucket(oss(Object.assign(config, { region: _bucket.region })), _bucket.name))
+    //);
 
     config.region = defaultRegion;
     store = oss(config);
@@ -77,7 +78,6 @@ describe('test/bucket.test.js', () => {
       name = name.substring(0, name.length - 1);
       // just for archive bucket test
       archvieBucket = `ali-oss-archive-bucket-${prefix.replace(/[/.]/g, '-')}`;
-      console.log(archvieBucket)
       archvieBucket = archvieBucket.substring(0, archvieBucket.length - 1);
       await store.putBucket(archvieBucket, { StorageClass: 'Archive', timeout: 120000 });
     });
@@ -93,7 +93,6 @@ describe('test/bucket.test.js', () => {
       const result2 = await store.listBuckets({}, {
         timeout: 120000,
       });
-      console.log(result2);
       const { buckets } = result2;
       const m = buckets.some(item => item.name === archvieBucket);
       assert(m === true);
@@ -463,28 +462,29 @@ describe('test/bucket.test.js', () => {
       const putResult = await store.putBucketCORS(bucket, rules);
       assert.equal(putResult.res.status, 200);
 
-      const getResult = await store.getBucketCORS(bucket);
+      const getResult = await store.getBucketCORS(bucket, { timeout: 120000 });
       assert.equal(getResult.res.status, 200);
       assert.deepEqual(getResult.rules, [{
         allowedOrigin: '*',
         allowedMethod: 'GET',
         allowedHeader: '*',
         exposeHeader: 'Content-Length',
-        maxAgeSeconds: env.ONCI ? '120' : '30'
+        maxAgeSeconds: '30'
       }]);
     });
 
     it('should overwrite cors', async () => {
       const rules1 = [{
         allowedOrigin: '*',
-        allowedMethod: 'GET'
+        allowedMethod: 'GET',
+        timeout: 120000
       }];
       const putCorsResult1 = await store.putBucketCORS(bucket, rules1);
       assert.equal(putCorsResult1.res.status, 200);
 
       await utils.sleep(ms(metaSyncTime));
 
-      const getCorsResult1 = await store.getBucketCORS(bucket);
+      const getCorsResult1 = await store.getBucketCORS(bucket, { timeout: 120000 });
       assert.equal(getCorsResult1.res.status, 200);
       assert.deepEqual(getCorsResult1.rules, [{
         allowedOrigin: '*',
@@ -500,7 +500,7 @@ describe('test/bucket.test.js', () => {
 
       await utils.sleep(ms(metaSyncTime));
 
-      const getCorsResult2 = await store.getBucketCORS(bucket);
+      const getCorsResult2 = await store.getBucketCORS(bucket, { timeout: 120000 });
       assert.equal(getCorsResult2.res.status, 200);
       assert.deepEqual(getCorsResult2.rules, [{
         allowedOrigin: 'localhost',
