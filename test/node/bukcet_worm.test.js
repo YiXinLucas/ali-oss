@@ -16,7 +16,7 @@ describe('test/bucket.test.js', () => {
     bucket = `ali-oss-test-bucket-${prefix.replace(/[/.]/g, '-')}`;
     bucket = bucket.substring(0, bucket.length - 1);
 
-    const result = await store.putBucket(bucket);
+    const result = await store.putBucket(bucket, { timeout: process.env.ONCI ? 60000 : 10000 });
     assert.equal(result.bucket, bucket);
     assert.equal(result.res.status, 200);
   });
