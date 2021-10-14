@@ -28,8 +28,7 @@ describe('test/bucket.test.js', () => {
     bucket = bucket.substring(0, bucket.length - 1);
     bucketRegion = defaultRegion;
 
-    const result = await store.putBucket(bucket, { timeout: process.env.ONCI ? 600000 : 10000 });
-    console.log(result)
+    const result = await store.putBucket(bucket, { timeout: process.env.ONCI ? 60000 : 10000 });
     assert.equal(result.bucket, bucket);
     assert.equal(result.res.status, 200);
   });
