@@ -73,6 +73,7 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - run: npm install
     - run: npm run test
+    - run: node test/node/cleanAllBucket.js
 
   node_12:
     needs: [node_10]
@@ -104,6 +105,7 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - run: npm install
     - run: npm run test
+    - run: node test/node/cleanAllBucket.js
 
   node_14:
     needs: [node_10,node_12]
@@ -134,6 +136,7 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - run: npm install
     - run: npm run test
+    - run: node test/node/cleanAllBucket.js
 
   cleanAllBucket:
     if: always()
