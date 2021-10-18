@@ -13,10 +13,11 @@ describe('test/bucket_worm.test.js', () => {
     store = oss(config);
     config.region = defaultRegion;
     store = oss(config);
-    bucket = `ali-oss-test-bucket-worm-${prefix.replace(/[/.]/g, '-')}`;
+    bucket = `ali-oss-test-worm_bucket-worm-${prefix.replace(/[/.]/g, '-')}`;
     bucket = bucket.substring(0, bucket.length - 1);
 
-    const result = await store.putBucket(bucket);
+    const result = await store.putBucket(bucket, {
+      timeout: process.env.ONCI ? 60000 : 10000 });
     assert.equal(result.bucket, bucket);
     assert.equal(result.res.status, 200);
   });
