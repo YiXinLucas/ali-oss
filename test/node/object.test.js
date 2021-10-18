@@ -2,6 +2,8 @@ const fs = require('fs');
 const path = require('path');
 const assert = require('assert');
 const { Readable } = require('stream');
+const ms = require('humanize-ms');
+const { metaSyncTime } = require('../config');
 const AgentKeepalive = require('agentkeepalive');
 const HttpsAgentKeepalive = require('agentkeepalive').HttpsAgent;
 const sleep = require('mz-modules/sleep');
@@ -1313,6 +1315,7 @@ describe('test/object.test.js', () => {
         });
         throw new Error('should not run this');
       } catch (err) {
+        await utils.sleep(ms(metaSyncTime));
         assert.equal(err.name, 'NoSuchKeyError');
         assert(Object.keys(store.agent.freeSockets).length === 0);
         await sleep(1);
