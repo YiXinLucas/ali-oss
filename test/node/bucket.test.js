@@ -431,7 +431,7 @@ describe('test/bucket.test.js', () => {
   describe('putBucketCORS(), getBucketCORS(), deleteBucketCORS()', () => {
     afterEach(async () => {
       // delete it
-      const result = await store.deleteBucketCORS(bucket);
+      const result = await store.deleteBucketCORS(bucket, { timeout: 120000 });
       assert.equal(result.res.status, 204);
     });
 
