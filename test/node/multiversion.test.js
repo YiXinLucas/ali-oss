@@ -3,6 +3,8 @@ const utils = require('./utils');
 const oss = require('../..');
 const config = require('../config').oss;
 const fs = require('fs');
+const ms = require('humanize-ms');
+const { metaSyncTime } = require('../config');
 
 describe('test/multiversion.test.js', () => {
   const { prefix } = utils;
@@ -103,7 +105,7 @@ describe('test/multiversion.test.js', () => {
     });
   });
 
-  describe('putBucketLifecycle() getBucketLifecycle()', () => {
+  describe('putBucketLifecycle() getBucketLifecycle()', async () => {
     it('should putBucketLifecycle with NoncurrentVersionExpiration', async () => {
       const putresult1 = await store.putBucketLifecycle(bucket, [{
         id: 'expiration1',
@@ -118,6 +120,7 @@ describe('test/multiversion.test.js', () => {
       }], {
         timeout: 120000
       });
+      await utils.sleep(ms(metaSyncTime));
       assert.strictEqual(putresult1.res.status, 200);
       const { rules } = await store.getBucketLifecycle(bucket);
       assert.strictEqual(rules[0].noncurrentVersionExpiration.noncurrentDays, '1');
@@ -168,6 +171,7 @@ describe('test/multiversion.test.js', () => {
     before(async () => {
       await store.putBucketVersioning(bucket, enabled);
       const result = await store.put(name, __filename);
+      await utils.sleep(ms(metaSyncTime));
       await store.delete(name);
       versionId = result.res.headers['x-oss-version-id'];
     });
