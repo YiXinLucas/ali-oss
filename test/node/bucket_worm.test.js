@@ -13,7 +13,7 @@ describe('test/bucket_worm.test.js', () => {
     store = oss(config);
     config.region = defaultRegion;
     store = oss(config);
-    bucket = `ali-oss-test-worm_bucket-worm-${prefix.replace(/[/.]/g, '-')}`;
+    bucket = `ali-oss-test-worm-bucket-worm-${prefix.replace(/[/.]/g, '-')}`;
     bucket = bucket.substring(0, bucket.length - 1);
 
     const result = await store.putBucket(bucket, {
@@ -23,7 +23,7 @@ describe('test/bucket_worm.test.js', () => {
   });
 
   after(async () => {
-    await utils.cleanBucket(store, bucket);
+    await utils.cleanAllBucket(store);
   });
   describe('worm()', () => {
     describe('initiateBucketWorm()', () => {
