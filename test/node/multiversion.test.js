@@ -115,7 +115,9 @@ describe('test/multiversion.test.js', () => {
         noncurrentVersionExpiration: {
           noncurrentDays: 1
         }
-      }]);
+      }], {
+        timeout: 120000
+      });
       assert.strictEqual(putresult1.res.status, 200);
       const { rules } = await store.getBucketLifecycle(bucket);
       assert.strictEqual(rules[0].noncurrentVersionExpiration.noncurrentDays, '1');
@@ -557,7 +559,7 @@ describe('test/multiversion.test.js', () => {
   describe('getBucketInfo()', () => {
     it('should return bucket Versioning', async () => {
       try {
-        await store.putBucketVersioning(bucket, enabled);
+        await store.putBucketVersioning(bucket, enabled,);
         const result = await store.getBucketInfo(bucket);
         assert.equal(result.res.status, 200);
         assert.equal(result.bucket.Versioning, enabled);
