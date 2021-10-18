@@ -1308,7 +1308,9 @@ describe('test/object.test.js', () => {
       });
       store.httpsAgent = new HttpsAgentKeepalive();
       try {
-        await store.getStream(`${name}not-exists`);
+        await store.getStream(`${name}not-exists`, {
+          timeout: 120000
+        });
         throw new Error('should not run this');
       } catch (err) {
         assert.equal(err.name, 'NoSuchKeyError');
