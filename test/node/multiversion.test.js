@@ -474,6 +474,7 @@ describe('test/multiversion.test.js', () => {
 
     // 不指定version id，删除当前版本，生成DELETE标记
     it('should delete object without versionId', async () => {
+      await utils.sleep(ms(metaSyncTime));
       const res = await store.delete(name);
       assert.strictEqual(res.res.headers['x-oss-delete-marker'], 'true');
       assert(res.res.headers['x-oss-version-id']);

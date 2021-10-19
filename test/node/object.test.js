@@ -1240,6 +1240,7 @@ describe('test/object.test.js', () => {
     });
 
     it('should get exists object stream', async () => {
+      await utils.sleep(ms(metaSyncTime));
       const result = await store.getStream(name);
       assert.equal(result.res.status, 200);
       assert(result.stream instanceof Readable);
