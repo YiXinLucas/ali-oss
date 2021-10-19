@@ -1,6 +1,10 @@
 const { env } = process;
 
 const config = module.exports;
+config.ci = {
+  a:1,
+  b:2
+}
 
 config.oss = {
   accessKeyId: env.ALI_SDK_OSS_ID,
