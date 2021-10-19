@@ -1,4 +1,4 @@
-
+//test ci
 // require("babel-polyfill")
 require('./style.css');
 const $ = require('jquery');
